@@ -1,0 +1,555 @@
+{
+  "info": {
+    "name": "Campeonato API",
+    "description": "Collection para testar as rotas da API de campeonato. Rode as pastas em ordem (Collection Runner): os testes salvam os IDs criados nas variáveis da collection.\n\nAuth: HTTP Basic com {{email}} / {{senha}}. Crie o usuário primeiro em '0 - Usuário'.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "{{email}}", "type": "string" },
+      { "key": "password", "value": "{{senha}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8081" },
+    { "key": "email", "value": "admin@teste.com" },
+    { "key": "senha", "value": "123456" },
+    { "key": "campeonatoId", "value": "1" },
+    { "key": "timeMandanteId", "value": "1" },
+    { "key": "timeVisitanteId", "value": "2" },
+    { "key": "jogadorId", "value": "1" },
+    { "key": "jogadorRemoverId", "value": "2" },
+    { "key": "partidaId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "0 - Usuário",
+      "item": [
+        {
+          "name": "Criar usuário",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"senha\": \"{{senha}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "1 - Times",
+      "item": [
+        {
+          "name": "Criar time mandante",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Flamengo\",\n  \"cidade\": \"Rio de Janeiro\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/times", "host": ["{{baseUrl}}"], "path": ["times"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('timeMandanteId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Criar time visitante",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Palmeiras\",\n  \"cidade\": \"São Paulo\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/times", "host": ["{{baseUrl}}"], "path": ["times"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('timeVisitanteId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar times",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/times", "host": ["{{baseUrl}}"], "path": ["times"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Retorna array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar time por id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/times/{{timeMandanteId}}", "host": ["{{baseUrl}}"], "path": ["times", "{{timeMandanteId}}"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2 - Jogadores",
+      "item": [
+        {
+          "name": "Adicionar jogador ao mandante",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Pedro\",\n  \"numero\": 9,\n  \"posicao\": \"Atacante\",\n  \"idade\": 28\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/times/{{timeMandanteId}}/jogadores", "host": ["{{baseUrl}}"], "path": ["times", "{{timeMandanteId}}", "jogadores"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('jogadorId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Adicionar segundo jogador (para remover)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Arrascaeta\",\n  \"numero\": 10,\n  \"posicao\": \"Meia\",\n  \"idade\": 30\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/times/{{timeMandanteId}}/jogadores", "host": ["{{baseUrl}}"], "path": ["times", "{{timeMandanteId}}", "jogadores"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('jogadorRemoverId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar jogadores do time",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/times/{{timeMandanteId}}/jogadores", "host": ["{{baseUrl}}"], "path": ["times", "{{timeMandanteId}}", "jogadores"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Retorna array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Média de idade do time",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/times/{{timeMandanteId}}/media-idade", "host": ["{{baseUrl}}"], "path": ["times", "{{timeMandanteId}}", "media-idade"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Retorna número', () => pm.expect(pm.response.json()).to.be.a('number'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Remover jogador do time",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/times/{{timeMandanteId}}/jogadores/{{jogadorRemoverId}}", "host": ["{{baseUrl}}"], "path": ["times", "{{timeMandanteId}}", "jogadores", "{{jogadorRemoverId}}"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3 - Campeonatos",
+      "item": [
+        {
+          "name": "Criar campeonato",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Brasileirão\",\n  \"ano\": 2026\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/campeonatos", "host": ["{{baseUrl}}"], "path": ["campeonatos"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('campeonatoId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar campeonatos",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/campeonatos", "host": ["{{baseUrl}}"], "path": ["campeonatos"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar campeonato por id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/campeonatos/{{campeonatoId}}", "host": ["{{baseUrl}}"], "path": ["campeonatos", "{{campeonatoId}}"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Adicionar time mandante ao campeonato",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/campeonatos/{{campeonatoId}}/times/{{timeMandanteId}}", "host": ["{{baseUrl}}"], "path": ["campeonatos", "{{campeonatoId}}", "times", "{{timeMandanteId}}"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Adicionar time visitante ao campeonato",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/campeonatos/{{campeonatoId}}/times/{{timeVisitanteId}}", "host": ["{{baseUrl}}"], "path": ["campeonatos", "{{campeonatoId}}", "times", "{{timeVisitanteId}}"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar times do campeonato",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/campeonatos/{{campeonatoId}}/times", "host": ["{{baseUrl}}"], "path": ["campeonatos", "{{campeonatoId}}", "times"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar time no campeonato por nome",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/campeonatos/{{campeonatoId}}/times/busca?nome=Flamengo",
+              "host": ["{{baseUrl}}"],
+              "path": ["campeonatos", "{{campeonatoId}}", "times", "busca"],
+              "query": [{ "key": "nome", "value": "Flamengo" }]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4 - Partidas",
+      "item": [
+        {
+          "name": "Criar partida",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": \"2026-10-20\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/partidas?campeonatoId={{campeonatoId}}&mandanteId={{timeMandanteId}}&visitanteId={{timeVisitanteId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["partidas"],
+              "query": [
+                { "key": "campeonatoId", "value": "{{campeonatoId}}" },
+                { "key": "mandanteId", "value": "{{timeMandanteId}}" },
+                { "key": "visitanteId", "value": "{{timeVisitanteId}}" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('partidaId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar partida por id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/partidas/{{partidaId}}", "host": ["{{baseUrl}}"], "path": ["partidas", "{{partidaId}}"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Registrar gols",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/partidas/{{partidaId}}/gols?golMandante=2&golVisitante=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["partidas", "{{partidaId}}", "gols"],
+              "query": [
+                { "key": "golMandante", "value": "2" },
+                { "key": "golVisitante", "value": "1" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Registrar cartão",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"minuto\": 35,\n  \"tipo\": \"AMARELO\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/partidas/{{partidaId}}/cartoes?jogadorId={{jogadorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["partidas", "{{partidaId}}", "cartoes"],
+              "query": [{ "key": "jogadorId", "value": "{{jogadorId}}" }]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Placar da partida",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/partidas/{{partidaId}}/placar", "host": ["{{baseUrl}}"], "path": ["partidas", "{{partidaId}}", "placar"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Vencedor da partida",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/partidas/{{partidaId}}/vencedor", "host": ["{{baseUrl}}"], "path": ["partidas", "{{partidaId}}", "vencedor"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 ou 204', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar partidas do campeonato",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/campeonatos/{{campeonatoId}}/partidas", "host": ["{{baseUrl}}"], "path": ["campeonatos", "{{campeonatoId}}", "partidas"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Classificação do campeonato",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/campeonatos/{{campeonatoId}}/classificacao", "host": ["{{baseUrl}}"], "path": ["campeonatos", "{{campeonatoId}}", "classificacao"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Retorna array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
