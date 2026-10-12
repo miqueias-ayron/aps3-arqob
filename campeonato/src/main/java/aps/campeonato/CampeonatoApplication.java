@@ -1,13 +1,13 @@
-package com.example.editora;
+package aps.campeonato;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EditoraApplication {
+public class CampeonatoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EditoraApplication.class, args);
+		SpringApplication.run(CampeonatoApplication.class, args);
 	}
 
 }
