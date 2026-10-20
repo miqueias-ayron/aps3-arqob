@@ -4,6 +4,7 @@ import aps.loja.cliente.Cliente;
 import aps.loja.produto.Produto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int numero;
 
+    @NotNull
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
@@ -25,6 +27,7 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> itens = new ArrayList<>();
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatusPedido status = StatusPedido.ABERTO;

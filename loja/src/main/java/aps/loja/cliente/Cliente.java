@@ -5,6 +5,8 @@ import aps.loja.pedido.Pedido;
 import aps.loja.pedido.StatusPedido;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,11 +20,15 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String cpf;
+
+    @Email
     private String email;
 
     @JsonIgnore

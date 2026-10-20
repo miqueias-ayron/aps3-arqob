@@ -3,6 +3,7 @@ package aps.loja.categoria;
 import aps.loja.produto.Produto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,6 +18,7 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
 
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 

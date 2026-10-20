@@ -5,6 +5,7 @@ import aps.loja.cliente.Cliente;
 import aps.loja.produto.Produto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,7 @@ public class Loja {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 

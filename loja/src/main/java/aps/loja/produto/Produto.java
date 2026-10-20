@@ -4,6 +4,9 @@ import aps.loja.categoria.Categoria;
 import aps.loja.loja.Loja;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -16,9 +19,12 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int codigo;
 
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 
+    @NotNull
+    @PositiveOrZero
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal preco;
 
