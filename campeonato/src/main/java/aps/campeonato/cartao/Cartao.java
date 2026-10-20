@@ -4,6 +4,8 @@ import aps.campeonato.jogador.Jogador;
 import aps.campeonato.partida.Partida;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Cartao {
@@ -15,8 +17,10 @@ public class Cartao {
     @JoinColumn(name = "id_jogador", nullable = false)
     private Jogador jogador;
 
+    @PositiveOrZero
     private int minuto;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoCartao tipo;

@@ -5,6 +5,8 @@ import aps.campeonato.cartao.Cartao;
 import aps.campeonato.time.Time;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class Partida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotNull
     @Column(nullable = false)
     private LocalDate data;
 
@@ -28,7 +31,9 @@ public class Partida {
     private Time timeVisitante;
 
     // null enquanto a partida não tiver placar registrado
+    @PositiveOrZero
     private Integer golsMandante;
+    @PositiveOrZero
     private Integer golsVisitante;
 
     @OneToMany(mappedBy = "partida", cascade = CascadeType.ALL, orphanRemoval = true)

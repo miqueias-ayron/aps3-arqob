@@ -4,6 +4,8 @@ import aps.campeonato.partida.Partida;
 import aps.campeonato.time.Time;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.*;
 
@@ -13,8 +15,11 @@ public class Campeonato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank
     @Column(nullable = false)
     private String nome;
+
+    @Min(1900)
     private int ano;
 
     @JsonIgnore

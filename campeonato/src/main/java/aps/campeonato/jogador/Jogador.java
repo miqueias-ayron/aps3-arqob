@@ -3,6 +3,10 @@ package aps.campeonato.jogador;
 import aps.campeonato.time.Time;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class Jogador {
@@ -10,10 +14,18 @@ public class Jogador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank
     @Column(nullable = false)
     private String nome;
+
+    @Min(1)
+    @Max(99)
     private int numero;
+
+    @NotBlank
     private String posicao;
+
+    @Positive
     private int idade;
 
     @JsonIgnore

@@ -3,6 +3,7 @@ package aps.campeonato.time;
 import aps.campeonato.jogador.Jogador;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,8 +16,11 @@ public class Time {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank
     @Column(nullable = false)
     private String nome;
+
+    @NotBlank
     private String cidade;
 
     @JsonIgnore
