@@ -10,17 +10,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         info = @Info(
-                title = "API Turismo",
+                title = "API Loja",
                 version = "1.0.0",
-                description = "API para gestão de destinos turísticos"
+                description = "API para gestão de uma loja virtual"
         ),
-        security = @SecurityRequirement(name = "basicAuth")
+        security = @SecurityRequirement(name = "bearerAuth")
 )
 @SecurityScheme(
-        name = "basicAuth",
+        name = "bearerAuth",
         type = SecuritySchemeType.HTTP,
-        scheme = "basic",
-        description = "Basic authentication"
+        scheme = "bearer",
+        bearerFormat = "JWT",
+        description = "Faça POST /login e cole aqui só o token (sem 'Bearer')"
 )
 public class OpenApiConfig {
 }
