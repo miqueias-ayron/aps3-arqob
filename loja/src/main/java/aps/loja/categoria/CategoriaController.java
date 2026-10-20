@@ -1,6 +1,7 @@
 package aps.loja.categoria;
 
 import aps.loja.produto.Produto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @PostMapping
-    public Categoria create(@RequestBody Categoria categoria) {
+    public Categoria create(@Valid @RequestBody Categoria categoria) {
         return categoriaService.create(categoria);
     }
 

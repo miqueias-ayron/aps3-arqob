@@ -2,6 +2,7 @@ package aps.loja.loja;
 
 import aps.loja.cliente.Cliente;
 import aps.loja.produto.Produto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class LojaController {
     private LojaService lojaService;
 
     @PostMapping
-    public Loja create(@RequestBody Loja loja) {
+    public Loja create(@Valid @RequestBody Loja loja) {
         return lojaService.create(loja);
     }
 
@@ -32,7 +33,7 @@ public class LojaController {
     @PostMapping("/{id}/produtos")
     public Produto adicionarProduto(@PathVariable int id,
                                     @RequestParam int categoriaId,
-                                    @RequestBody Produto produto) {
+                                    @Valid @RequestBody Produto produto) {
         return lojaService.adicionarProduto(id, categoriaId, produto);
     }
 
@@ -52,7 +53,7 @@ public class LojaController {
     }
 
     @PostMapping("/{id}/clientes")
-    public Cliente adicionarCliente(@PathVariable int id, @RequestBody Cliente cliente) {
+    public Cliente adicionarCliente(@PathVariable int id, @Valid @RequestBody Cliente cliente) {
         return lojaService.adicionarCliente(id, cliente);
     }
 
