@@ -1,5 +1,6 @@
 package aps.campeonato.partida;
 
+import jakarta.validation.Valid;
 import aps.campeonato.cartao.Cartao;
 import aps.campeonato.time.Time;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class PartidaController {
     public Partida create(@RequestParam int campeonatoId,
                           @RequestParam int mandanteId,
                           @RequestParam int visitanteId,
-                          @RequestBody Partida partida) {
+                          @Valid @RequestBody Partida partida) {
         return partidaService.create(campeonatoId, mandanteId, visitanteId, partida);
     }
 
@@ -36,7 +37,7 @@ public class PartidaController {
     @PostMapping("/{id}/cartoes")
     public Partida registrarCartao(@PathVariable int id,
                                    @RequestParam int jogadorId,
-                                   @RequestBody Cartao cartao) {
+                                   @Valid @RequestBody Cartao cartao) {
         return partidaService.registrarCartao(id, jogadorId, cartao);
     }
 

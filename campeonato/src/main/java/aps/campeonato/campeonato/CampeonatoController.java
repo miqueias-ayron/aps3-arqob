@@ -1,5 +1,6 @@
 package aps.campeonato.campeonato;
 
+import jakarta.validation.Valid;
 import aps.campeonato.partida.Partida;
 import aps.campeonato.time.Time;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class CampeonatoController {
     private CampeonatoService campeonatoService;
 
     @PostMapping
-    public Campeonato create(@RequestBody Campeonato campeonato) {
+    public Campeonato create(@Valid @RequestBody Campeonato campeonato) {
         return campeonatoService.create(campeonato);
     }
 

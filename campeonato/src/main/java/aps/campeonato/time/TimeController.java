@@ -1,5 +1,6 @@
 package aps.campeonato.time;
 
+import jakarta.validation.Valid;
 import aps.campeonato.jogador.Jogador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ public class TimeController {
     private TimeService timeService;
 
     @PostMapping
-    public Time create(@RequestBody Time time) {
+    public Time create(@Valid @RequestBody Time time) {
         return timeService.create(time);
     }
 
@@ -29,7 +30,7 @@ public class TimeController {
     }
 
     @PostMapping("/{id}/jogadores")
-    public Jogador adicionarJogador(@PathVariable int id, @RequestBody Jogador jogador) {
+    public Jogador adicionarJogador(@PathVariable int id, @Valid @RequestBody Jogador jogador) {
         return timeService.adicionarJogador(id, jogador);
     }
 
