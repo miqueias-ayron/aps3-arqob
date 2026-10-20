@@ -18,5 +18,8 @@ public class UsuarioController {
                 .create(createUserDTO);
     }
 
-
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+        return usuarioService.login(loginRequest);
+    }
 }
