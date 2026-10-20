@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         info = @Info(
-                title = "API Loja",
+                title = "API Campeonato",
                 version = "1.0.0",
-                description = "API para gestão de uma loja virtual"
+                description = "API para gestão de campeonatos de futebol"
         ),
         security = @SecurityRequirement(name = "bearerAuth")
 )
