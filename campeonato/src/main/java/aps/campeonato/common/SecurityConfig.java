@@ -22,6 +22,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/swagger-ui.html",
                                 "/h2-console/**",
                                 "/swagger-ui/**",
