@@ -19,7 +19,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+    public LoginResponse login(@Valid @RequestBody LoginRequest loginRequest) {
         return usuarioService.login(loginRequest);
     }
 

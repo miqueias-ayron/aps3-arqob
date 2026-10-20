@@ -1,11 +1,13 @@
 package aps.campeonato.usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UsuarioService implements UserDetailsService {
@@ -46,13 +48,13 @@ public class UsuarioService implements UserDetailsService {
             UserDetails userDetails = this.loadUserByUsername(loginRequest.getEmail());
 
             if (!passwordEncoder.matches(loginRequest.getSenha(), userDetails.getPassword())) {
-                throw new RuntimeException("Senha inválida");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email ou senha inválidos");
             }
 
             String token = jwtService.generateToken(loginRequest.getEmail());
             return new LoginResponse(token);
         } catch (UsernameNotFoundException e) {
-            throw new RuntimeException("Usuário não encontrado");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email ou senha inválidos");
         }
     }
 
